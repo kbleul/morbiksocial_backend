@@ -1,9 +1,9 @@
 
 const express = require("express")
 const mongoose = require("mongoose")
-const helmet = require("helmet")
+//const helmet = require("helmet")
 // const bodyParser = require('body-parser')
-
+const cors = require("cors");
 const connectDB = require('./config/dbConn')
 
 const userAuthRoutes = require("./routes/userAuthRoutes")
@@ -38,8 +38,9 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded());
     //middlewares
-    app.use(helmet())
+    //app.use(helmet())
 
+    app.use(cors());
 
     app.use((req , res , next) => { 
         console.log(req.path, req.method , req.body)     
