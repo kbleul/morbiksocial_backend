@@ -2,6 +2,8 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const helmet = require("helmet")
+const bodyParser = require('body-parser')
+
 const connectDB = require('./config/dbConn')
 
 const userAuthRoutes = require("./routes/userAuthRoutes")
@@ -33,9 +35,14 @@ const app = express()
 
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
     //middlewares
-    app.use(express.json())
     app.use(helmet())
+
 
     app.use((req , res , next) => { 
         console.log(req.path, req.method , req.body)     
