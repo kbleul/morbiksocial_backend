@@ -2,7 +2,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const helmet = require("helmet")
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 
 const connectDB = require('./config/dbConn')
 
@@ -35,11 +35,8 @@ const app = express()
 
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
-app.use(bodyParser.json())
+app.use(express.json());
+app.use(express.urlencoded());
     //middlewares
     app.use(helmet())
 
