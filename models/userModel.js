@@ -112,11 +112,11 @@ userSchema.statics.login = async function( username_or_email , password , res ) 
         const username = username_or_email
         const user = await this.findOne( { username } )
 
-        if(!user ){ res.status(400).json({"error" : "Username not found"}) }
+        if(!user ){ throw Error("Username not found")  }
 
         const result = await matchPassword(password , user.password)
 
-        if(!result) res.status(400).json({"error" : "Incorrect Password"}) 
+        if(!result) throw Error("Incorrect Password") 
    
         return user
      }
@@ -125,11 +125,11 @@ userSchema.statics.login = async function( username_or_email , password , res ) 
       const email = username_or_email
       const user = await this.findOne( { email } )
 
-      if(!user ){ res.status(400).json({"error" : "Email address not found"}) }
+      if(!user ){ throw Error("Email address not found")  }
 
         const result = await matchPassword(password , user.password)
 
-     if(!result) res.status(400).json({"error" : "Incorrect Password"}) 
+     if(!result) throw Error("Incorrect Password") 
 
      return user
 }
