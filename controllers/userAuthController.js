@@ -40,7 +40,7 @@ const prepareReturnObj =  (user , token ) => {
 
 const loginUser = async ( req , res ) => {
     const { username_or_email  ,  password } = req.body
-    res.status(200).json({"user" : username_or_email  , "pass" : password})
+    res.status(200).send("user")
     return
 console.log("login")
     try {
