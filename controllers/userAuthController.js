@@ -42,25 +42,26 @@ const loginUser = async ( req , res ) => {
 console.log("login")
 
     const { username_or_email  ,  password } = req.body
-    res.status(200).send("user")
+    res.status(200).json({"user" : "user"})
+
     return
-console.log("login")
-    try {
-        const user = await User.login( username_or_email , password )
-console.log("ola")
+// console.log("login")
+//     try {
+//         const user = await User.login( username_or_email , password )
+// console.log("ola")
 
-        if(typeof user === "string") {
-         res.status(200).json({"error" : user} )
-        }
-        else {
-            const token = createToken(user._id)
-            res.status(200).json( prepareReturnObj(user , token) )
-        }     
+//         if(typeof user === "string") {
+//          res.status(200).json({"error" : user} )
+//         }
+//         else {
+//             const token = createToken(user._id)
+//             res.status(200).json( prepareReturnObj(user , token) )
+//         }     
 
 
-    } catch(error) {  
-console.log("error",error.message)
-        res.status(400).json({"error" : error.message})  }
+//     } catch(error) {  
+// console.log("error",error.message)
+//         res.status(400).json({"error" : error.message})  }
 
 }
 

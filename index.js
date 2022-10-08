@@ -62,14 +62,14 @@ mongoose.connection.once('open', () => {
   //             .catch(error => console.log(error))
    
   // app.use("/", (req,res) => { console.log("hiii"); res.status(200).send("hii")}) 
-    app.use("/api/auth/login", async ( req , res ) => {
-      console.log("login")
-          const { username_or_email  ,  password } = req.body
-      console.log(username_or_email  ,  password)
+    // app.use("/api/auth/login", async ( req , res ) => {
+    //   console.log("login")
+    //       const { username_or_email  ,  password } = req.body
+    //   console.log(username_or_email  ,  password)
 
-          res.status(200).json({"user" : "user"})
-          return})
-
+    //       res.status(200).json({"user" : "user"})
+    //       return})
+    app.use("/api/auth", userAuthRoutes)
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
     app.use("/api/user/cover", upload.single("cover"), userRoutes )
     app.use("/api" , userRoutes)
