@@ -67,7 +67,7 @@ mongoose.connection.once('open', () => {
           const { username_or_email  ,  password } = req.body
       console.log(username_or_email  ,  password)
 
-          res.status(200).send("user")
+          res.status(200).json({"user" : "user"})
           return})
 
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
