@@ -42,14 +42,14 @@ const loginUser = async ( req , res ) => {
     const { username_or_email  ,  password } = req.body
 console.log("login")
     try {
-        const user = await User.login( username_or_email , password , res )
+        const user = await User.login( username_or_email , password )
 console.log("ola")
                 //create token
                 const token = createToken(user._id)
 
         res.status(200).json( prepareReturnObj(user , token) )
 
-    } catch(error) {  res.status(400).json({"error" : "error.message"})  }
+    } catch(error) {  res.status(400).json({error : error.message})  }
 
 }
 
