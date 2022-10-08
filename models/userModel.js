@@ -112,27 +112,31 @@ userSchema.statics.login = async function( username_or_email , password , res ) 
         const username = username_or_email
         const user = await this.findOne( { username } )
 
-        if(!user ){ throw Error("Username not found")  }
+        if(!user ){ return "Username not found"  }
 
         const result = await matchPassword(password , user.password)
 
-        if(!result) throw Error("Incorrect Password") 
+        if(!result) return "Incorrect Password"
+
    
         return user
      }
+
 
       //check if email exists
       const email = username_or_email
       const user = await this.findOne( { email } )
 
-      if(!user ){ throw Error("Email address not found")  }
+      if(!user ){ return "Email address not found"  }
 
         const result = await matchPassword(password , user.password)
 
-     if(!result) throw Error("Incorrect Password") 
+     if(!result) return "Incorrect Password"
+
 
      return user
 }
+
 
 
 module.exports = mongoose.model("User" , userSchema)
