@@ -103,7 +103,7 @@ userSchema.statics.signup = async function ( username ,email , password ) {
 }
 
 
-userSchema.statics.login = async function( username_or_email , password ) {
+userSchema.statics.login = async function( username_or_email , password , res ) {
     //validation
     if(!username_or_email || !password) { throw Error("All fields must be filled") }
 
@@ -112,11 +112,11 @@ userSchema.statics.login = async function( username_or_email , password ) {
         const username = username_or_email
         const user = await this.findOne( { username } )
 
-        if(!user ){ throw Error("Username not found")  }
+        if(!user ){ res.status(400).json({"error" : "Username not found"}) }
 
         const result = await matchPassword(password , user.password)
 
-        if(!result) throw Error("Incorrect Password") 
+        if(!result) res.status(400).json({"error" : "Incorrect Password"}) 
    
         return user
      }
@@ -125,11 +125,11 @@ userSchema.statics.login = async function( username_or_email , password ) {
       const email = username_or_email
       const user = await this.findOne( { email } )
 
-      if(!user ){ throw Error("Email address not found")  }
+      if(!user ){ res.status(400).json({"error" : "Email address not found"}) }
 
         const result = await matchPassword(password , user.password)
 
-     if(!result) throw Error("Incorrect Password") 
+     if(!result) res.status(400).json({"error" : "Incorrect Password"}) 
 
      return user
 }
