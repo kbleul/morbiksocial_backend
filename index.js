@@ -61,7 +61,7 @@ mongoose.connection.once('open', () => {
   //            })
   //             .catch(error => console.log(error))
    
-  app.use("/", (req,res) => { console.log("hiii"); res.status(200).send("hii")}) 
+  // app.use("/", (req,res) => { console.log("hiii"); res.status(200).send("hii")}) 
     app.use("/api/auth", userAuthRoutes)
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
     app.use("/api/user/cover", upload.single("cover"), userRoutes )
