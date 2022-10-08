@@ -40,7 +40,7 @@ const prepareReturnObj =  (user , token ) => {
 
 const loginUser = async ( req , res ) => {
     const { username_or_email  ,  password } = req.body
-
+console.log("login")
     try {
         const user = await User.login( username_or_email , password )
 console.log("ola")
