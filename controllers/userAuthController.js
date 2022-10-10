@@ -23,7 +23,7 @@ const prepareReturnObj =  (user , token ) => {
 
 const signupUser = async(req , res) => { 
     const { username ,email , password } = req.body
-
+console.log("herer")
     try {
         const user = await User.signup( username , email , password )
 

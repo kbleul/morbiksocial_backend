@@ -57,7 +57,7 @@ mongoose.connection.once('open', () => {
 
 
     //       return}) userAuthRoutes
-    app.use("/api/auth", (req,res) => { console.log("boddy",req.body)} )
+    app.use("/api/auth", userAuthRoutes )
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
     app.use("/api/user/cover", upload.single("cover"), userRoutes )
     app.use("/api" , userRoutes)
