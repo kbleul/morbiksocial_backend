@@ -12,7 +12,7 @@ const postRoutes = require("./routes/postRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
 const messageRoutes = require("./routes/messageRoutes")
 
-const User = require("../models/userModel")
+const User = require("./models/userModel")
 
 
 var path = require('path');
