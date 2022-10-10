@@ -37,7 +37,6 @@ console.log("herer")
             res.status(200).json( prepareReturnObj(user , token) )
         }  
 
-
     } catch(error) { res.status(400).json({error : error.message})  }
 }
 

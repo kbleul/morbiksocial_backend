@@ -12,6 +12,8 @@ const postRoutes = require("./routes/postRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
 const messageRoutes = require("./routes/messageRoutes")
 
+const User = require("../models/userModel")
+
 
 var path = require('path');
 
@@ -56,7 +58,25 @@ mongoose.connection.once('open', () => {
 })
 
 
-    //       return}) userAuthRoutes
+    app.use("/api/signup", async (req , res) => {
+      const { username ,email , password } = req.body
+      console.log("herer")
+          try {
+              const user = await User.signup( username , email , password )
+      
+              console.log(user)
+      
+              if(typeof user === "string") {
+                  res.status(200).json({"error" : user} )
+                 }
+              else {
+                  const token = createToken(user._id)
+                  res.status(200).json( prepareReturnObj(user , token) )
+              }  
+      
+          } catch(error) { res.status(400).json({error : error.message})  }
+    })
+
     app.use("/api/auth", userAuthRoutes )
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
     app.use("/api/user/cover", upload.single("cover"), userRoutes )
