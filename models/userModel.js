@@ -119,7 +119,6 @@ userSchema.statics.login = async function( username_or_email , password , res ) 
         const result = await matchPassword(password , user.password)
 
         if(!result) return "Incorrect Password"
-
    
         return user
      }
