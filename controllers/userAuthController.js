@@ -21,7 +21,7 @@ const prepareReturnObj =  (user , token ) => {
 
 //---------------------------------------------//
 
- const signupUser = async(req , res) => { 
+const signupUser = async(req , res) => { 
     const { username ,email , password } = req.body
 
     try {
@@ -29,11 +29,14 @@ const prepareReturnObj =  (user , token ) => {
 
         console.log(user)
 
+        if(typeof user === "string") {
+            res.status(200).json({"error" : user} )
+           }
+        else {
+            const token = createToken(user._id)
+            res.status(200).json( prepareReturnObj(user , token) )
+        }  
 
-                //create token
-                const token = createToken(user._id)
-
-        res.status(200).json( prepareReturnObj(user , token) )
 
     } catch(error) { res.status(400).json({error : error.message})  }
 }

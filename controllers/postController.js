@@ -45,6 +45,7 @@ const createPost = async (req, res) => {
         //create a safe json file that does not include password or other fields
         const { username, profilePicture } = user._doc
 
+console.log({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
 
         res.status(200).json({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
     } catch (error) { res.status(500).json(error) }

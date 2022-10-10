@@ -55,19 +55,7 @@ mongoose.connection.once('open', () => {
   app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`))
 })
 
-  // mongoose.connect(process.env.MONGO_URI)
-  //           .then(() => {
-  //               app.listen(process.env.PORT , () => { console.log("Server is running at " + process.env.PORT )})
-  //            })
-  //             .catch(error => console.log(error))
-   
-  // app.use("/", (req,res) => { console.log("hiii"); res.status(200).send("hii")}) 
-    // app.use("/api/auth/login", async ( req , res ) => {
-    //   console.log("login")
-    //       const { username_or_email  ,  password } = req.body
-    //   console.log(username_or_email  ,  password)
 
-    //       res.status(200).json({"user" : "user"})
     //       return})
     app.use("/api/auth", userAuthRoutes)
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )

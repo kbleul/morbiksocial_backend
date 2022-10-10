@@ -79,19 +79,20 @@ const matchPassword = async (password , password_two) => {
 userSchema.statics.signup = async function ( username ,email , password ) {
 
     //validation
-    if(!username || !email || !password) { throw Error("All fields must be filled") }
+    if(!username || !email || !password) 
+        { return "All fields must be filled" }
 
-    if(!validator.isEmail(email)) { throw Error("Email is not valid") }
+    if(!validator.isEmail(email)) { return "Email is not valid" }
 
-    if(!validator.isStrongPassword(password)) { throw Error("Please use a strong password. Password should include a capital letter , small letter , number and symbol") }
+    if(!validator.isStrongPassword(password)) { return "Please use a strong password. Password should include a capital letter , small letter , number and symbol" }
 
       //check if email exists
       const email_exists = await this.findOne( { email } )
-          if(email_exists ){ throw Error("Email already exists")  }
+          if(email_exists ){ return "Email already exists"  }
         
       //check if username exists
       const username_exists = await this.findOne( { username } )
-         if(username_exists ){ throw Error("Username is already taken")  }
+         if(username_exists ){ return "Username is already taken" }
 
         //hashing
     const salt = await bcrypt.genSalt(10)
@@ -105,7 +106,8 @@ userSchema.statics.signup = async function ( username ,email , password ) {
 
 userSchema.statics.login = async function( username_or_email , password , res ) {
     //validation
-    if(!username_or_email || !password) { throw Error("All fields must be filled") }
+    if(!username_or_email || !password) 
+        { return "All fields must be filled" }
 
     //if it not an email address check if it is a username instead
     if(!validator.isEmail(username_or_email)) { 
@@ -121,7 +123,6 @@ userSchema.statics.login = async function( username_or_email , password , res ) 
    
         return user
      }
-
 
       //check if email exists
       const email = username_or_email
