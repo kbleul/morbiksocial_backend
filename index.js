@@ -11,11 +11,30 @@ const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
 const messageRoutes = require("./routes/messageRoutes")
+const jwt = require("jsonwebtoken")
+const formatDistance = require('date-fns/formatDistance')
 
 const User = require("./models/userModel")
 
 
 var path = require('path');
+
+const prepareReturnObj =  (user , token ) => {
+  const returnObj = {_id : user._id , profilePicture : user.profilePicture , coverPicture : user.coverPicture , username_or_email : user.username , username: user.username , email: user.email, token , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
+
+  return returnObj
+}
+
+//create a readable date
+const createReadableDate = (date) => {
+  const newdate = formatDistance(new Date(date),new Date());
+    
+    return newdate
+}
+
+//UTILITY FUNCTIONS
+const createToken = (_id) => 
+            { return jwt.sign({ _id } , process.env.SECRET, { expiresIn : "3d" })  }
 
 const multer  = require('multer')
 const storage = multer.diskStorage({
@@ -56,7 +75,6 @@ mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB')
   app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`))
 })
-
 
     app.use("/api/signup", async (req , res) => {
       const { username ,email , password } = req.body
