@@ -53,7 +53,7 @@ const storage = new CloudinaryStorage({
   cloudinary : cloudinary,
   params : {
       folder : (req , file) => `morbikSocial/${file.fieldname}`,
-      format : async () => file.originalname.split(".")[1],
+      format : async (req , file) => file.originalname.split(".")[1],
       public_id: (req , file) => uniqueSuffix + file.originalname.split(".")[0],
   }
 })
