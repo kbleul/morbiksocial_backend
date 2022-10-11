@@ -57,18 +57,6 @@ const storage = new CloudinaryStorage({
       public_id: (req , file) => uniqueSuffix + file.originalname.split(".")[0],
   }
 })
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {  cb(null, 'public/data/uploads/') },
-//     filename: function (req, file, cb) {
-//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-
-//       const [ originalname , extension] = file.originalname.split(".")
-//       const fullImgName = originalname + "" + file.fieldname + '-' + uniqueSuffix +  "." + extension
-//       cb(null, fullImgName)
-
-//       req.img = fullImgName
-//     }
-// })
   
 const upload = multer({ storage: storage })
 

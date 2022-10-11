@@ -47,7 +47,7 @@ console.log(req.file.path)
 
 console.log({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
 
-        res.status(200).json({ "_id" : _id })
+        res.status(200).json({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
     } catch (error) { res.status(500).json(error) }
 
 }
