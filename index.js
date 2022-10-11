@@ -52,7 +52,7 @@ const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
 const storage = new CloudinaryStorage({
   cloudinary : cloudinary,
   params : {
-      folder : `morbikSocial/${file.fieldname}`,
+      folder : (req , file) => `morbikSocial/${file.fieldname}`,
       format : async () => file.originalname.split(".")[1],
       public_id: (req , file) => uniqueSuffix + file.originalname.split(".")[0],
   }
