@@ -15,40 +15,40 @@ const createReadableDate = (date) => {
 const createPost = async (req, res) => {
 
 console.log(req.file.path)
-//     if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) 
-//             { return res.status(404).json({ error: "User id is not valid" }) }
+    if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) 
+            { return res.status(404).json({ error: "User id is not valid" }) }
 
-//     const user = await User.findById(req.user._id.toString())
+    const user = await User.findById(req.user._id.toString())
 
-//     let obj = req.img ? 
-//                     { 
-//                         userId: req.user._id.toString(), 
-//                         username : user.username, 
-//                         userProfilePicture :  user.profilePicture  ,
-//                         img: req.img , 
-//                     } :
-//                     { 
-//                         userId: req.user._id.toString(), 
-//                         username : user.username, 
-//                         userProfilePicture :  user.profilePicture  ,
-//                         desc: req.body.desc , 
-//                     }
+    let obj = req.img ? 
+                    { 
+                        userId: req.user._id.toString(), 
+                        username : user.username, 
+                        userProfilePicture :  user.profilePicture  ,
+                        img: req.file.path , 
+                    } :
+                    { 
+                        userId: req.user._id.toString(), 
+                        username : user.username, 
+                        userProfilePicture :  user.profilePicture  ,
+                        desc: req.body.desc , 
+                    }
 
 
-//     const newPost = new Post(obj)
+    const newPost = new Post(obj)
 
-//     try {
-//         const { _id, userId, userProfilePicture, img, desc, likes, createdAt } = await newPost.save()
+    try {
+        const { _id, userId, userProfilePicture, img, desc, likes, createdAt } = await newPost.save()
         
-//         const readabledate = await createReadableDate(createdAt)
+        const readabledate = await createReadableDate(createdAt)
 
-//         //create a safe json file that does not include password or other fields
-//         const { username, profilePicture } = user._doc
+        //create a safe json file that does not include password or other fields
+        const { username, profilePicture } = user._doc
 
-// console.log({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
+console.log({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
 
-//         res.status(200).json({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
-//     } catch (error) { res.status(500).json(error) }
+        res.status(200).json({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
+    } catch (error) { res.status(500).json(error) }
 
 }
 

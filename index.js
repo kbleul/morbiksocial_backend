@@ -52,9 +52,9 @@ const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
 const storage = new CloudinaryStorage({
   cloudinary : cloudinary,
   params : {
-      folder : "morbikSocial",
-      format : async () => "png",
-      public_id: (req , file) => uniqueSuffix + file.filename,
+      folder : `morbikSocial/${file.fieldname}`,
+      format : async () => file.originalname.split(".")[1],
+      public_id: (req , file) => uniqueSuffix + file.originalname.split(".")[0],
   }
 })
 // const storage = multer.diskStorage({
@@ -116,7 +116,7 @@ mongoose.connection.once('open', () => {
     })
 
     app.use("/api/auth", userAuthRoutes )
-    app.use("/api/user/profile", upload.single('avatar'), userRoutes )
+    app.use("/api/user/profile", upload.single('profile'), userRoutes )
     app.use("/api/user/cover", upload.single("cover"), userRoutes )
     app.use("/api" , userRoutes)
     app.use("/myhome/api" , userRoutes)
@@ -125,7 +125,7 @@ mongoose.connection.once('open', () => {
     app.use("/myhome/api/user", userRoutes)
 
 
-    app.use("/api/share/image", upload.single("share") , postRoutes)
+    app.use("/api/share/image", upload.single("post") , postRoutes)
     app.use("/api/share" , postRoutes)
     app.use("/api/posts", postRoutes)
 
