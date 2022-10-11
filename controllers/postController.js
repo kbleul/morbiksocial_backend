@@ -14,13 +14,14 @@ const createReadableDate = (date) => {
 
 const createPost = async (req, res) => {
 
-console.log(req.file.path)
+    req.file && console.log("path " , req.file.path)
+     
     if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) 
             { return res.status(404).json({ error: "User id is not valid" }) }
 
     const user = await User.findById(req.user._id.toString())
 
-    let obj = req.img ? 
+    let obj = req.file ? 
                     { 
                         userId: req.user._id.toString(), 
                         username : user.username, 
