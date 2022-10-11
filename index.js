@@ -33,22 +33,42 @@ const createReadableDate = (date) => {
 }
 
 //UTILITY FUNCTIONS
-const createToken = (_id) => 
-            { return jwt.sign({ _id } , process.env.SECRET, { expiresIn : "3d" })  }
+const createToken = (_id) => { 
+  return jwt.sign({ _id } , process.env.SECRET, { expiresIn : "3d" })  
+}
 
 const multer  = require('multer')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {  cb(null, 'public/data/uploads/') },
-    filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+const cloudinary = require("cloudinary").v2
+const { CloudinaryStorage } = require("multer-storage-cloudinary")
 
-      const [ originalname , extension] = file.originalname.split(".")
-      const fullImgName = originalname + "" + file.fieldname + '-' + uniqueSuffix +  "." + extension
-      cb(null, fullImgName)
+cloudinary.config({
+  cloud_name : process.env.cloud_name,
+  api_key : process.env.api_key,
+  api_secret : process.env.api_secret,
+})
 
-      req.img = fullImgName
-    }
-  })
+const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+
+const storage = new CloudinaryStorage({
+  cloudinary : cloudinary,
+  params : {
+      folder : "morbikSocial",
+      format : async () => "png",
+      public_id: (req , file) => uniqueSuffix + file.filename,
+  }
+})
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {  cb(null, 'public/data/uploads/') },
+//     filename: function (req, file, cb) {
+//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+
+//       const [ originalname , extension] = file.originalname.split(".")
+//       const fullImgName = originalname + "" + file.fieldname + '-' + uniqueSuffix +  "." + extension
+//       cb(null, fullImgName)
+
+//       req.img = fullImgName
+//     }
+// })
   
 const upload = multer({ storage: storage })
 
