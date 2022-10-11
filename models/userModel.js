@@ -25,11 +25,11 @@ const userSchema = new Schema({
     },
     profilePicture : {
         type : String,
-        default : "black.png"
+        default : "https://res.cloudinary.com/dgavaiblp/image/upload/v1665511290/morbikSocial/placeholder/black_dzkx5m.png"
     },
     coverPicture : {
         type : String,
-        default : "cover.jpg"
+        default : "https://res.cloudinary.com/dgavaiblp/image/upload/v1665511293/morbikSocial/placeholder/cover_q15ffc.jpg"
     },
     followers : {
         type : Array,

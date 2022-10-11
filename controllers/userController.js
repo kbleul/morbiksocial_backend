@@ -60,9 +60,9 @@ const updateProfilePic = async ( req, res ) => {
       const userparam_id = req.params.id
 
       try {
-          const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"profilePicture" : req.img} })
+         await User.findOneAndUpdate({ _id : userparam_id } , { ...{"profilePicture" : req.file.path} })
 
-          res.status(200).json({ profilePicture : req.img })
+          res.status(200).json({ profilePicture : req.file.path })
           }  
         catch(error) { res.status(404).json({error: "Profile picture not uploaded "}) }
 }
@@ -71,9 +71,9 @@ const updateCoverPic = async ( req , res ) => {
       const userparam_id = req.params.id
 
       try {
-          const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"coverPicture" : req.img} })
+         await User.findOneAndUpdate({ _id : userparam_id } , { ...{"coverPicture" : req.file.path} })
        
-             res.status(200).json({ coverPicture : req.img })
+             res.status(200).json({ coverPicture : req.file.path })
           }  
      catch(error) { res.status(404).json({error: "Profile picture not uploaded "})  }
 }
