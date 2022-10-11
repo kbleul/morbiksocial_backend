@@ -7,7 +7,7 @@ const { createPost , updatePost , deletePost, likePost, getPost, getTimelinePost
 router.use(requireAuth)
 
 //CREATE POST
-router.post("/image", createPost )
+router.post("/", createPost )
 
 //UPDATE POST
 router.put("/:id", updatePost )
