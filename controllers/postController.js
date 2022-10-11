@@ -1,20 +1,12 @@
 const Post = require("../models/postModel")
 const User = require("../models/userModel")
-const formatDistance = require('date-fns/formatDistance')
 
+const { createReadableDate , prepareReturnObj_Post , getPosts } = require("../utilityFunctions/util")
 
 const mongoose = require("mongoose")
 
-//create a readable date
-const createReadableDate = (date) => {
-    const newdate = formatDistance(new Date(date), new Date());
-
-    return newdate
-}
 
 const createPost = async (req, res) => {
-
-    console.log("path " , req.file.path)
      
     if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) 
             { return res.status(404).json({ error: "User id is not valid" }) }
@@ -46,10 +38,12 @@ const createPost = async (req, res) => {
         //create a safe json file that does not include password or other fields
         const { username, profilePicture } = user._doc
 
-console.log({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
-
         res.status(200).json({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
-    } catch (error) { res.status(500).json(error) }
+
+    } catch (error) { 
+        console.log("error",error.message)
+        res.status(500).json(error) 
+    }
 
 }
 
@@ -109,12 +103,12 @@ const likePost = async (req, res) => {
 
         if (!post.likes.includes(req.user._id.toString())) {
             
-           let result =  await Post.findByIdAndUpdate({ _id: req.params.id },{ $push: { likes: req.user._id.toString() } })
+     await Post.findByIdAndUpdate({ _id: req.params.id },{ $push: { likes: req.user._id.toString() } })
 
             res.status(200).json({"status" : "Liked" , "user" : req.user._id.toString() })
         }
         else {
-            let result =  await Post.findByIdAndUpdate({ _id: req.params.id },{ $pull: { likes: req.user._id.toString() } })
+     await Post.findByIdAndUpdate({ _id: req.params.id },{ $pull: { likes: req.user._id.toString() } })
 
             res.status(200).json({"status" : "Disliked" , "user" : req.user._id.toString()})
 
@@ -154,47 +148,11 @@ const getTimelinePost = async (req, res) => {
         )
 
         friendsposts.forEach(item => {
-            item.forEach(i => {
-                temparr.push(i)
-            })
-        })
-
-
-         temparr.forEach(item => {
-
-        let userProfilePicture = ""
-        let username = "Unknown"
-
-          if(item.userProfilePicture) 
-          { userProfilePicture = item.userProfilePicture  }
-
-          if(item.username) 
-          { username = item.username  }
-
-
-            const { _id, userId, desc, img, likes, createdAt } = item
-          
-
-            const date = createReadableDate(createdAt)
-            friendsposts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+            friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) ) 
         })
 
         userposts.forEach(item => {
-
-             userProfilePicture = ""
-             let username = "Unknown"
-
-            if(item.userProfilePicture) 
-            { userProfilePicture = item.userProfilePicture  }
-
-            if(item.username) 
-            { username = item.username  }
-  
-
-            const { _id, userId, desc, img, likes, createdAt } = item
-
-            const date = createReadableDate(createdAt)
-            friendsposts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+            friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
         })
 
       res.status(200).json(friendsposts_arr.reverse())
@@ -214,69 +172,22 @@ const getSuggestedPost = async (req, res) => {
      allposts = allposts.filter(tempP =>  currentuser._id.toString() !== tempP.userId && !currentuser.following.includes(tempP.userId) )
 
      allposts.forEach(tempP => {
-        let userProfilePicture = ""
-        let username = "Unknown"
-
-        if(tempP.userProfilePicture) 
-        { userProfilePicture = tempP.userProfilePicture  }
-
-        if(tempP.username) 
-        { username = tempP.username  }
-
-
-          const { _id, userId, desc, img, likes, createdAt } = tempP
-        
-
-          const date = createReadableDate(createdAt)
-          sugg_posts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+          sugg_posts_arr.push( prepareReturnObj_Post(tempP , currentuser) )
      })
           
      res.status(200).json(sugg_posts_arr.reverse())
 
-
     } catch (error) { res.status(500).json({ error: error }) }
 }
 
-//utitlity function
-const getPosts = async (userid , req, res) => {
-    try {
-        let finalarr = []
-        const currentuser = await User.findById(userid);
-
-        const myposts = await Post.find({ userId : currentuser._id})
-
-        myposts.forEach(post => {
-        const { _id, userId, desc, img, likes, createdAt } = post
-        const date = createReadableDate(createdAt)
-
-        let userProfilePicture = ""
-        let username = "Unknown"
-
-            if(post.userProfilePicture) 
-            { userProfilePicture = post.userProfilePicture  }
-
-            if(post.username) 
-            { username = post.username  }
-              
-
-            finalarr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
-        })
-
-        res.status(200).json(finalarr.reverse())
-
-    } catch(error) { res.status(500).json({ error: error }) }
+const getUserPost = async (req, res) => { 
+  getPosts( req.user._id.toString() , res )
 }
-
-
-const getUserPost = async (req, res) => { console.log("USER" ,req.user._id)
-  getPosts( req.user._id.toString() , req, res )
-}
-
 
 const getOthersPost = async ( req , res ) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) { return res.status(404).json({ error: "Post id is not valid" }) }
 
-    getPosts( req.params.id , req, res )
+    getPosts( req.params.id , res )
 }
 
 module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost ,getSuggestedPost , getOthersPost, getUserPost }

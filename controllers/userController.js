@@ -2,19 +2,8 @@ const User = require("../models/userModel")
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const validator = require("validator")
-const formatDistance = require('date-fns/formatDistance')
 
-        //create a readable date
-const createReadableDate = (date) => {
-    const newdate = formatDistance(new Date(date),new Date());
-    return newdate
-}
-
-const prepareReturnObj =  (user ) => {
-    const returnObj = { _id : user._id , username : user.username , profilePicture : user.profilePicture , coverPicture : user.coverPicture, email : user.email , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
-
-    return returnObj
-}
+const { prepareReturnObj } = require("../utilityFunctions/util")
 
 
 
@@ -105,14 +94,11 @@ const deleteUser = async ( req , res ) => {
 //GET single user
 const getUser = async ( req , res ) => {
     const {id} = req.params
-console.log("id",id)
+
        if( !mongoose.Types.ObjectId.isValid(id) ) 
             return res.status(404).json({error: "User id is not valid "})
 
-
     const user =  await User.findById({_id : id})
-  
-
 
         if(!user) return res.status(404).json({error: "User does not exist"})
 
@@ -243,8 +229,6 @@ const getSearch = async ( req , res ) => {
 
     const word = req.body.word
     let finalarr = []
-
-    console.log("istrue",word === "")
 
     if(word === "" || word === " ") {
         res.status(200).json([])

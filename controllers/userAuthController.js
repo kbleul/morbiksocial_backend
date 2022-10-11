@@ -1,67 +1,48 @@
 const User = require("../models/userModel")
-const jwt = require("jsonwebtoken")
-const formatDistance = require('date-fns/formatDistance')
 
-//UTILITY FUNCTIONS
-const createToken = (_id) => 
-            { return jwt.sign({ _id } , process.env.SECRET, { expiresIn : "3d" })  }
+const { createToken , prepareReturnObj_withToken } = require("../utilityFunctions/util")
 
-        //create a readable date
-const createReadableDate = (date) => {
-    const newdate = formatDistance(new Date(date),new Date());
-   
-    return newdate
-}
-
-const prepareReturnObj =  (user , token ) => {
-    const returnObj = {_id : user._id , profilePicture : user.profilePicture , coverPicture : user.coverPicture , username_or_email : user.username , username: user.username , email: user.email, token , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
-
-    return returnObj
-}
-
-//---------------------------------------------//
 
 const signupUser = async(req , res) => { 
     const { username ,email , password } = req.body
-console.log("herer")
+
     try {
         const user = await User.signup( username , email , password )
-
-        console.log(user)
 
         if(typeof user === "string") {
             res.status(200).json({"error" : user} )
            }
         else {
             const token = createToken(user._id)
-            res.status(200).json( prepareReturnObj(user , token) )
+            res.status(200).json( prepareReturnObj_withToken(user , token) )
         }  
 
-    } catch(error) { res.status(400).json({"error" : error.message})  }
+    } catch(error) { 
+        console.log("error",error.message)
+        res.status(400).json({"error" : error.message})  
+    }
+    
 }
 
 const loginUser = async ( req , res ) => {
-console.log("login")
 
     const { username_or_email  ,  password } = req.body
-   // res.status(200).json({"user" : "user"})
 
-// console.log("login")
      try {
         const user = await User.login( username_or_email , password )
-console.log("ola")
 
         if(typeof user === "string") {
          res.status(200).json({"error" : user} )
         }
         else {
             const token = createToken(user._id)
-            res.status(200).json( prepareReturnObj(user , token) )
+            res.status(200).json( prepareReturnObj_withToken(user , token) )
         }     
 
     } catch(error) {  
-console.log("error",error.message)
-        res.status(400).json({"error" : error.message})  }
+        console.log("error",error.message)
+        res.status(400).json({"error" : error.message})  
+    }
 
 }
 

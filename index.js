@@ -1,53 +1,32 @@
 require('dotenv').config()
 const express = require("express")
 const mongoose = require("mongoose")
-//const helmet = require("helmet")
-// const bodyParser = require('body-parser')
 const cors = require("cors");
 const connectDB = require('./config/dbConn')
+
+const  { prepareReturnObj_withToken , createToken } = require("./utilityFunctions/util")
 
 const userAuthRoutes = require("./routes/userAuthRoutes")
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
 const messageRoutes = require("./routes/messageRoutes")
-const jwt = require("jsonwebtoken")
-const formatDistance = require('date-fns/formatDistance')
 
 const upload = require("./middleware/cloudinary.config")
 
 const User = require("./models/userModel")
 
-
-var path = require('path');
-
-const prepareReturnObj =  (user , token ) => {
-  const returnObj = {_id : user._id , profilePicture : user.profilePicture , coverPicture : user.coverPicture , username_or_email : user.username , username: user.username , email: user.email, token , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
-
-  return returnObj
-}
-
-//create a readable date
-const createReadableDate = (date) => {
-  const newdate = formatDistance(new Date(date),new Date());
-    
-    return newdate
-}
-
-//UTILITY FUNCTIONS
-const createToken = (_id) => { 
-  return jwt.sign({ _id } , process.env.SECRET, { expiresIn : "3d" })  
-}
-
+let path = require('path');
 
 const app = express()
 
-app.use("/public", express.static(path.join(__dirname, 'public')));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-    //middlewares
-    //app.use(helmet())
+
+   // middlewares
+   app.use("/public", express.static(path.join(__dirname, 'public')));
+
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
     app.use(cors());
 
@@ -77,7 +56,7 @@ mongoose.connection.once('open', () => {
                  }
               else {
                   const token = createToken(user._id)
-                  res.status(200).json( prepareReturnObj(user , token) )
+                  res.status(200).json( prepareReturnObj_withToken(user , token) )
               }  
       
           } catch(error) { res.status(400).json({error : error.message})  }

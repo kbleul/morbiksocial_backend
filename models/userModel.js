@@ -2,6 +2,8 @@ const mongoose = require("mongoose")
 const validator = require("validator")
 const bcrypt = require("bcrypt")
 
+const { matchPassword } = require("../utilityFunctions/util")
+
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
@@ -64,15 +66,6 @@ const userSchema = new Schema({
     }
 }, { timestamps : true })
 
-
-//utility function 
-const matchPassword = async (password , password_two) => {
-    const match = await bcrypt.compare(password , password_two)
-
-    if(!match)  return null 
-
-    return "match"
-}
 
 
 //static functions

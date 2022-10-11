@@ -1,14 +1,8 @@
 const Message = require("../models/messageModel");
 const mongoose = require("mongoose");
-const formatDistance = require('date-fns/formatDistance')
 
-
-  //create a readable date
-const createReadableDate = (date) => {
-    const newdate = formatDistance(new Date(date),new Date());
-    
-    return newdate
-}
+const { createReadableDate } = require("../utilityFunctions/util")
+ 
 
 const addMessage = async (req, res) => { 
     try {
@@ -25,10 +19,6 @@ const addMessage = async (req, res) => {
     } catch (err) { res.status(500).json(err);  }
 
     const newMessage = new Message(req.body);
-
-    try {
-
-    } catch (err) {  res.status(500).json(err); }
 
       try {
          const { _id , sender , conversationId , text , createdAt} = await newMessage.save();
