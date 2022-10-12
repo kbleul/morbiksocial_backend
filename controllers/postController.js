@@ -145,6 +145,8 @@ console.log("currentuser",currentuser)
                 return Post.find({ userId: friend }).sort({ date: 'desc' })
             })
         )
+console.log("friendsposts",friendsposts.length)
+console.log("userposts",userposts.length)
 
         friendsposts.forEach(item => { 
             console.log(friendsposts_arr.length)
