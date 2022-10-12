@@ -134,11 +134,10 @@ const getPost = async (req, res) => {
 const getTimelinePost = async (req, res) => {
     let currentuser
     let friendsposts_arr  = []
-    let temparr  = []
 
     try {
         currentuser = await User.findById(req.user._id.toString());
-
+console.log("currentuser",currentuser)
         const userposts = await Post.find({ userId: currentuser._id }).sort({ date: 1 });
 
         const friendsposts = await Promise.all(
@@ -147,11 +146,13 @@ const getTimelinePost = async (req, res) => {
             })
         )
 
-        friendsposts.forEach(item => {
+        friendsposts.forEach(item => { 
+            console.log(friendsposts_arr.length)
             friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) ) 
         })
 
-        userposts.forEach(item => {
+        userposts.forEach(item => {  
+            console.log(friendsposts_arr.length)
             friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
         })
 
