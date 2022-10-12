@@ -148,17 +148,17 @@ console.log("currentuser",currentuser)
 console.log("friendsposts",friendsposts.length)
 console.log("userposts",userposts.length)
 
-        friendsposts.forEach(item => { 
-            console.log(friendsposts_arr.length)
-            friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) ) 
-        })
+        // friendsposts.forEach(item => { 
+        //     console.log(friendsposts_arr.length)
+        //     friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) ) 
+        // })
 
-        userposts.forEach(item => {  
-            console.log(friendsposts_arr.length)
-            friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
-        })
+        // userposts.forEach(item => {  
+        //     console.log(friendsposts_arr.length)
+        //     friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
+        // })
 
-      res.status(200).json(friendsposts_arr.reverse())
+      res.status(200).json(friendsposts_arr)
 
     } catch (error) { res.status(500).json({ error: error }) }
 }
