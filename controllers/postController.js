@@ -148,15 +148,16 @@ console.log("currentuser",currentuser)
 console.log("friendsposts",friendsposts.length)
 console.log("userposts",userposts.length)
 
-        // friendsposts.forEach(item => { 
-        //     console.log(friendsposts_arr.length)
-        //     friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) ) 
-        // })
+        friendsposts.forEach(item => { 
+            console.log(friendsposts_arr.length)
+            let temp = prepareReturnObj_Post(item , currentuser)
+            friendsposts_arr.push(temp) 
+        })
 
-        // userposts.forEach(item => {  
-        //     console.log(friendsposts_arr.length)
-        //     friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
-        // })
+        userposts.forEach(item => {  
+            console.log(friendsposts_arr.length)
+            friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
+        })
 
       res.status(200).json(friendsposts_arr)
 
