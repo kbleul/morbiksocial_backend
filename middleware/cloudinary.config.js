@@ -14,7 +14,8 @@ const storage = new CloudinaryStorage({
   cloudinary : cloudinary,
   params : {
       folder : (req , file) => `morbikSocial/${file.fieldname}`,
-      format : async (req , file) => file.originalname.split(".")[1],
+      format : 'png',
+      allowed_formats : ['png'],
       public_id: (req , file) => uniqueSuffix + file.originalname.split(".")[0],
   }
 })
