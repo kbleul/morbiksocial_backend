@@ -44,7 +44,7 @@ const prepareReturnObj_withToken =  (user , token ) => {
 
 
 //get a specific users posts using userid
-const getPosts = async (userid , res) => {
+const getPosts = async function (userid , res) {
     try {
         let finalarr = []
         const currentuser = await User.findById(userid);
@@ -65,12 +65,20 @@ const createToken = (_id) => {
     return jwt.sign({ _id } , process.env.SECRET, { expiresIn : "3d" })  
 }
 
-const matchPassword = async (password , password_two) => {
+const matchPassword = async function (password , password_two) {
     const match = await bcrypt.compare(password , password_two)
 
-    if(!match)  return null 
+    if(!match) { return null }
 
     return "match"
 }
 
-module.exports = { createReadableDate , prepareReturnObj_Post , prepareReturnObj  , prepareReturnObj_withToken , getPosts , createToken , matchPassword }
+module.exports = { 
+    createReadableDate , 
+    prepareReturnObj_Post , 
+    prepareReturnObj  , 
+    prepareReturnObj_withToken , 
+    getPosts , 
+    createToken , 
+    matchPassword ,
+}

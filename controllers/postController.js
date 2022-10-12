@@ -7,13 +7,13 @@ const mongoose = require("mongoose")
 
 
 const createPost = async (req, res) => {
-     
+     console.log(req.body)
     if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) 
             { return res.status(404).json({ error: "User id is not valid" }) }
 
     const user = await User.findById(req.user._id.toString())
 
-    let obj = req.file.path ? 
+    let obj = req.file ? 
                     { 
                         userId: req.user._id.toString(), 
                         username : user.username, 
