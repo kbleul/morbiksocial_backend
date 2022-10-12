@@ -134,6 +134,7 @@ const getPost = async (req, res) => {
 const getTimelinePost = async (req, res) => {
     let currentuser
     let friendsposts_arr  = []
+    let temparr = []
 
     try {
         currentuser = await User.findById(req.user._id.toString());
@@ -148,7 +149,13 @@ console.log("currentuser",currentuser)
 console.log("friendsposts",friendsposts.length)
 console.log("userposts",userposts.length)
 
-        friendsposts.forEach(item => { 
+        friendsposts.forEach(item => {
+            item.forEach(i => {
+                temparr.push(i)
+            })
+        })
+
+        temparr.forEach(item => { 
             console.log(friendsposts_arr.length)
             let temp = prepareReturnObj_Post(item , currentuser)
             friendsposts_arr.push(temp) 

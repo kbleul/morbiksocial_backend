@@ -12,6 +12,7 @@ const createReadableDate = (date) => {
       return newdate
 }
 
+
 const prepareReturnObj_Post = ( post , currentuser ) => {
     console.log("post","currentuser",post,currentuser)
     const { _id, userId, desc, img, likes, createdAt } = post
