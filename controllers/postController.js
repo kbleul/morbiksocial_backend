@@ -153,9 +153,12 @@ console.log("userposts",userposts.length)
             let temp = prepareReturnObj_Post(item , currentuser)
             friendsposts_arr.push(temp) 
         })
+        console.log("friendsposts_arr length ", friendsposts_arr.length)
 
         userposts.forEach(item => {  
-            console.log(friendsposts_arr.length)
+            console.log("us" , friendsposts_arr.length)
+            let temp = prepareReturnObj_Post(item , currentuser)
+
             friendsposts_arr.push( prepareReturnObj_Post(item , currentuser) )
         })
 
